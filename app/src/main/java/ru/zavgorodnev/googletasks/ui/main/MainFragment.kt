@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
 import ru.zavgorodnev.googletasks.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private val tabTitles = listOf<String>("Избранные", "Все задачи", "Выполненные")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +29,10 @@ class MainFragment : Fragment() {
 
         viewPagerAdapter = ViewPagerAdapter(this)
         binding.categoryViewPager2.adapter = viewPagerAdapter
+
+        TabLayoutMediator(binding.categoryTabLayout, binding.categoryViewPager2) { tab, pos ->
+            tab.text = tabTitles[pos]
+        }.attach()
     }
 
 }
