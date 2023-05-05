@@ -3,6 +3,7 @@ package ru.zavgorodnev.googletasks
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.zavgorodnev.googletasks.databinding.ActivityMainBinding
+import ru.zavgorodnev.googletasks.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,5 +14,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, MainFragment())
+                .commit()
+        }
     }
 }
