@@ -10,6 +10,7 @@ import ru.zavgorodnev.googletasks.databinding.FragmentMainBinding
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,5 +22,11 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewPagerAdapter = ViewPagerAdapter(this)
+        binding.categoryViewPager2.adapter = viewPagerAdapter
+    }
 
 }
