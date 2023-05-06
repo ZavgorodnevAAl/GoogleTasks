@@ -9,11 +9,11 @@ import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.ItemTaskBinding
 
-class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
+class TasksAdapter(private val listener: TaskItemListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     private var tasks: MutableList<Task> = mutableListOf()
 
-    class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemTaskBinding.bind(view)
 
         fun bind(task: Task) = with(binding) {
@@ -31,17 +31,19 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
             isFavoriteImageButton.setImageResource(imageRes)
 
             root.setOnClickListener {
-                Toast.makeText(root.context, "Открыть задачу ${task.title}", Toast.LENGTH_SHORT).show()
+                listener.onClickTask(task.id)
             }
 
             isCompletedCheckBox.setOnClickListener {
-                task.isCompleted =isCompletedCheckBox.isChecked
+                task.isCompleted = isCompletedCheckBox.isChecked
+                listener.onCompletedButtonPressed(task)
             }
 
             isFavoriteImageButton.setOnClickListener {
                 task.isFavorite = !task.isFavorite
                 val image = if (task.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border
                 isFavoriteImageButton.setImageResource(image)
+                listener.onFavoriteButtonPressed(task)
             }
 
         }

@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.FragmentListBinding
+import java.util.UUID
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), TaskItemListener {
 
     private lateinit var binding: FragmentListBinding
     private val viewModel: ListViewModel by activityViewModels()
-    private val adapter = TasksAdapter()
+    private val adapter = TasksAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,5 +63,17 @@ class ListFragment : Fragment() {
             fragment.arguments = arguments
             return fragment
         }
+    }
+
+    override fun onClickTask(taskId: UUID) {
+        Toast.makeText(requireContext(), "Launch task screen", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onFavoriteButtonPressed(task: Task) {
+        viewModel.isFavoriteButtonPressed(task)
+    }
+
+    override fun onCompletedButtonPressed(task: Task) {
+        viewModel.isCompletedButtonPressed(task)
     }
 }

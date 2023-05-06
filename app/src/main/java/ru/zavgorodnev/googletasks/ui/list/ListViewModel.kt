@@ -16,6 +16,14 @@ class ListViewModel : ViewModel() {
     val favoriteTasks: LiveData<List<Task>> = tasksRepository.getFavouriteTasks()
     val completedTasks: LiveData<List<Task>> = tasksRepository.getCompletedTasks()
 
+    fun isFavoriteButtonPressed(task: Task) = viewModelScope.launch(Dispatchers.IO) {
+        tasksRepository.updateTask(task)
+    }
+
+    fun isCompletedButtonPressed(task: Task) = viewModelScope.launch(Dispatchers.IO) {
+        tasksRepository.updateTask(task)
+    }
+
     fun addTask(task: Task) = viewModelScope.launch(Dispatchers.IO) {
         tasksRepository.add(task)
     }
