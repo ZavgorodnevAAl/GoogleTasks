@@ -24,13 +24,4 @@ class ListViewModel : ViewModel() {
         tasksRepository.updateTask(task)
     }
 
-    fun addTask(task: Task) = viewModelScope.launch(Dispatchers.IO) {
-        tasksRepository.add(task)
-    }
-
-    fun updateTask(task: Task) = viewModelScope.launch(Dispatchers.IO) {
-        tasksRepository.updateTask(task)
-    }
-
-
 }
