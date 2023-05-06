@@ -5,9 +5,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import ru.zavgorodnev.googletasks.ui.list.ListFragment
 
 val types = listOf<String>(
-    ListFragment.COMPLETED_TYPE,
+    ListFragment.FAVORITES_TYPE,
     ListFragment.ALL_TYPE,
-    ListFragment.FAVORITES_TYPE
+    ListFragment.COMPLETED_TYPE,
 )
 private const val NUMBER_OF_PAGES = 3
 
