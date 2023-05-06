@@ -31,7 +31,7 @@ class MainFragment : Fragment() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        taskCreationDialog = BottomSheetDialog(requireContext())
+        taskCreationDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
         taskCreationDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         makeTaskCreationDialog()
 
