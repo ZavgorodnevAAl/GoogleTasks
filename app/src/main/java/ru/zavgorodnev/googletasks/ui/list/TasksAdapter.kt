@@ -9,11 +9,11 @@ import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.ItemTaskBinding
 
-class ListAdapter : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
+class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     private var tasks: MutableList<Task> = mutableListOf()
 
-    class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemTaskBinding.bind(view)
 
         fun bind(task: Task) = with(binding) {
@@ -47,9 +47,9 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
-        return ListViewHolder(view)
+        return TasksViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -57,7 +57,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
         return tasks.size
     }
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
         holder.bind(tasks[position])
     }
 
