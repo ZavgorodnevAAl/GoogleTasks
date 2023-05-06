@@ -11,7 +11,7 @@ class MainViewModel: ViewModel() {
 
     private val taskRepository = InDatabaseTaskRepository.get()
 
-    private fun onAddTaskButtonPressed(task: Task) = viewModelScope.launch(Dispatchers.IO) {
+    fun onAddTaskButtonPressed(task: Task) = viewModelScope.launch(Dispatchers.IO) {
         taskRepository.add(task)
     }
 
