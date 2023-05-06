@@ -63,5 +63,6 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     fun setTasks(tasks: List<Task>) {
         this.tasks = tasks.toMutableList()
+        notifyDataSetChanged()
     }
 }
