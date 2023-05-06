@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.zavgorodnev.googletasks.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private val tabTitles = listOf<String>("Избранные", "Все задачи", "Выполненные")
 
