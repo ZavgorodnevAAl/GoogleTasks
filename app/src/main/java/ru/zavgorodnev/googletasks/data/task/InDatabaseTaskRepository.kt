@@ -29,6 +29,9 @@ class InDatabaseTaskRepository private constructor(context: Context) {
     suspend fun updateTask(task: Task) {
 
         tasksDao.updateTask(task)
+        if (task.isCompleted) {
+            tasksDao.markSubtasksAsCompleted(task.id)
+        }
     }
 
     suspend fun removeTask(task: Task) {

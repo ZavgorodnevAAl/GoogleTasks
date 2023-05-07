@@ -27,6 +27,9 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE id=(:id)")
     fun getTask(id: UUID): LiveData<Task?>
 
+    @Query("UPDATE task SET isCompleted = 1 WHERE parent=(:parentId)")
+    fun markSubtasksAsCompleted(parentId: UUID)
+
     @Insert
     suspend fun addTask(task: Task)
 
