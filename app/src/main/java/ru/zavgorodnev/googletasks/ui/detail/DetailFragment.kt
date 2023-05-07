@@ -126,8 +126,7 @@ class DetailFragment : Fragment() {
         private const val ARGUMENT_ID = "argument_id"
 
         fun newInstance(id: UUID): DetailFragment {
-            val arguments = bundleOf()
-            ARGUMENT_ID to id
+            val arguments = bundleOf(ARGUMENT_ID to id)
             val fragment = DetailFragment()
             fragment.arguments = arguments
 
