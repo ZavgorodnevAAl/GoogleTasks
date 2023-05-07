@@ -6,4 +6,5 @@
     <string name="enter_title_hint">Введите задачу</string>
     <string name="mark_completed">Задача выполненна</string>
     <string name="mark_uncompleted">Задача не выполненна</string>
+    <string name="subtasks">Подзадачи:</string>
 </resources>
