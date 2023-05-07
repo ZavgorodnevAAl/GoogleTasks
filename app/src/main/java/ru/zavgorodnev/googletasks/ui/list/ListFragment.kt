@@ -1,23 +1,38 @@
 package ru.zavgorodnev.googletasks.ui.list
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.FragmentListBinding
+import ru.zavgorodnev.googletasks.ui.detail.DetailFragment
+import ru.zavgorodnev.googletasks.utils.Navigator
+import java.lang.Exception
 import java.util.UUID
 
 class ListFragment : Fragment(), TaskItemListener {
 
     private lateinit var binding: FragmentListBinding
     private val viewModel: ListViewModel by activityViewModels()
+    private var navigator: Navigator? = null
     private val adapter = TasksAdapter(this)
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navigator = context as Navigator?
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        navigator = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +81,15 @@ class ListFragment : Fragment(), TaskItemListener {
     }
 
     override fun onClickTask(taskId: UUID) {
-        Toast.makeText(requireContext(), "Launch task screen", Toast.LENGTH_SHORT).show()
+        Log.d("tag", "open task")
+        val fragment = DetailFragment.newInstance(taskId)
+        Log.d("tag", "lunch will be call")
+        try {
+            navigator?.launch(fragment)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     override fun onFavoriteButtonPressed(task: Task) {
