@@ -151,11 +151,8 @@ class DetailFragment : Fragment(), SubtaskItemListener {
         dialogBinding.descriptionImageButton.setOnClickListener {
             dialogBinding.descriptionEditText.visibility = View.VISIBLE
         }
-        dialogBinding.addToFavoriteCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            dialogBinding.addToFavoriteCheckBox.setButtonDrawable(
-                if (isChecked) R.drawable.ic_star else R.drawable.ic_star_border
-            )
-        }
+
+        dialogBinding.addToFavoriteCheckBox.visibility = View.GONE
 
         dialogBinding.titleEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -170,7 +167,7 @@ class DetailFragment : Fragment(), SubtaskItemListener {
             val subtask = Task(
                 title = dialogBinding.titleEditText.text.toString(),
                 description = dialogBinding.descriptionEditText.text.toString(),
-                isFavorite = dialogBinding.addToFavoriteCheckBox.isChecked,
+                isFavorite = false,
                 isCompleted = false,
                 parent = task.id
             )
