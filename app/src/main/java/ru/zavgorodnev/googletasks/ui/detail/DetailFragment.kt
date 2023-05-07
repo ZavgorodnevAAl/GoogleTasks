@@ -1,5 +1,6 @@
 package ru.zavgorodnev.googletasks.ui.detail
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.FragmentDetailBinding
+import ru.zavgorodnev.googletasks.utils.Navigator
 import java.util.UUID
 
 class DetailFragment : Fragment() {
@@ -20,6 +22,17 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by activityViewModels()
     private lateinit var task: Task
+    private var navigator: Navigator? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navigator = context as Navigator?
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        navigator = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +49,7 @@ class DetailFragment : Fragment() {
 
         binding.goBackImageButton.setOnClickListener {
             viewModel.save(task)
-            //go back
+            navigator?.goBack()
         }
 
         binding.favoriteCheckBox.setOnCheckedChangeListener { btn, isChecked ->
@@ -47,14 +60,14 @@ class DetailFragment : Fragment() {
         binding.deleteImageButton.setOnClickListener {
             Toast.makeText(requireContext(), "Задача удалена", Toast.LENGTH_SHORT).show()
             viewModel.delete(task)
-            //go back
+            navigator?.goBack()
         }
 
         binding.addToCompletedButton.setOnClickListener {
             task.isCompleted = !task.isCompleted
             if (task.isCompleted) {
                 viewModel.save(task)
-                //go back
+                navigator?.goBack()
             } else {
                 renderScreen()
             }
