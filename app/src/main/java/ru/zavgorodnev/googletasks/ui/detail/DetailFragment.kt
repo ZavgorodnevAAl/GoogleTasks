@@ -8,15 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.BottomSheetFragmentCreateTaskBinding
 import ru.zavgorodnev.googletasks.databinding.FragmentDetailBinding
+import ru.zavgorodnev.googletasks.ui.list.TasksAdapter
 import ru.zavgorodnev.googletasks.utils.Navigator
 import java.util.UUID
 
@@ -26,6 +29,7 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by activityViewModels()
     private lateinit var task: Task
     private var navigator: Navigator? = null
+    private val subtaskAdapter = TasksAdapter(null)
     private lateinit var taskCreationDialog: BottomSheetDialog
 
     override fun onAttach(context: Context) {
@@ -81,6 +85,13 @@ class DetailFragment : Fragment() {
         taskCreationDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         makeTaskCreationDialog()
 
+        binding.addSubtaskImageButton.setOnClickListener {
+            taskCreationDialog.show()
+        }
+
+        binding.subtasksRecyclerView.adapter = subtaskAdapter
+        binding.subtasksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         return binding.root
     }
 
@@ -92,6 +103,10 @@ class DetailFragment : Fragment() {
                 task = it
                 renderScreen()
             }
+        }
+
+        viewModel.subtasks.observe(viewLifecycleOwner) {
+            subtaskAdapter.setTasks(it)
         }
     }
 
