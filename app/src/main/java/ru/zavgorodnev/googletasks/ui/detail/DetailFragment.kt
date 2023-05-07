@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.FragmentDetailBinding
@@ -17,12 +18,13 @@ import java.util.UUID
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
+    private val viewModel: DetailViewModel by activityViewModels()
     private lateinit var task: Task
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val taskId = requireArguments().getSerializable(ARGUMENT_ID) as UUID
-        //load task
+        viewModel.load(taskId)
     }
 
     override fun onCreateView(
@@ -33,7 +35,7 @@ class DetailFragment : Fragment() {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         binding.goBackImageButton.setOnClickListener {
-            //save task
+            viewModel.save(task)
             //go back
         }
 
@@ -44,13 +46,14 @@ class DetailFragment : Fragment() {
 
         binding.deleteImageButton.setOnClickListener {
             Toast.makeText(requireContext(), "Задача удалена", Toast.LENGTH_SHORT).show()
+            viewModel.delete(task)
             //go back
         }
 
         binding.addToCompletedButton.setOnClickListener {
             task.isCompleted = !task.isCompleted
             if (task.isCompleted) {
-                //save task
+                viewModel.save(task)
                 //go back
             } else {
                 renderScreen()
@@ -58,6 +61,17 @@ class DetailFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.task.observe(viewLifecycleOwner) {
+            if (it != null) {
+                task = it
+                renderScreen()
+            }
+        }
     }
 
     override fun onStart() {
