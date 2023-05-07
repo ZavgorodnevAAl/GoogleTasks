@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.ItemTaskBinding
+import ru.zavgorodnev.googletasks.ui.detail.SubtaskItemListener
 
-class TasksAdapter(private val listener: TaskItemListener?) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
+class TasksAdapter(private val listener: TaskItemListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     private var tasks: MutableList<Task> = mutableListOf()
 
@@ -27,23 +28,28 @@ class TasksAdapter(private val listener: TaskItemListener?) : RecyclerView.Adapt
             }
 
             isCompletedCheckBox.isChecked = task.isCompleted
-            val imageRes = if (task.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border
-            isFavoriteImageButton.setImageResource(imageRes)
+            if (listener !is SubtaskItemListener) {
+                isFavoriteImageButton.visibility = View.VISIBLE
+                val imageRes = if (task.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border
+                isFavoriteImageButton.setImageResource(imageRes)
+            } else {
+                isFavoriteImageButton.visibility = View.GONE
+            }
 
             root.setOnClickListener {
-                listener?.onClickTask(task.id)
+                listener.onClickTask(task.id)
             }
 
             isCompletedCheckBox.setOnClickListener {
                 task.isCompleted = isCompletedCheckBox.isChecked
-                listener?.onCompletedButtonPressed(task)
+                listener.onCompletedButtonPressed(task)
             }
 
             isFavoriteImageButton.setOnClickListener {
                 task.isFavorite = !task.isFavorite
                 val image = if (task.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border
                 isFavoriteImageButton.setImageResource(image)
-                listener?.onFavoriteButtonPressed(task)
+                listener.onFavoriteButtonPressed(task)
             }
 
         }
