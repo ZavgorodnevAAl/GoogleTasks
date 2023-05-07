@@ -173,7 +173,7 @@ class DetailFragment : Fragment() {
                 description = dialogBinding.descriptionEditText.text.toString(),
                 isFavorite = dialogBinding.addToFavoriteCheckBox.isChecked,
                 isCompleted = false,
-                parent = null
+                parent = task.id
             )
             viewModel.addSubtask(subtask)
             taskCreationDialog.dismiss()
