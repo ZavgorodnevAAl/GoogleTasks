@@ -18,7 +18,6 @@ import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.BottomSheetFragmentCreateTaskBinding
 import ru.zavgorodnev.googletasks.databinding.FragmentDetailBinding
-import ru.zavgorodnev.googletasks.ui.list.TaskItemListener
 import ru.zavgorodnev.googletasks.ui.list.TasksAdapter
 import ru.zavgorodnev.googletasks.utils.Navigator
 import java.util.UUID
@@ -213,5 +212,9 @@ class DetailFragment : Fragment(), SubtaskItemListener {
 
     override fun onCompletedButtonPressed(task: Task) {
         viewModel.save(task)
+    }
+
+    override fun deleteSubtask(subtask: Task) {
+        viewModel.delete(subtask)
     }
 }

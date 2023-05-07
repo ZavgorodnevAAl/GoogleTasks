@@ -28,12 +28,18 @@ class TasksAdapter(private val listener: TaskItemListener) : RecyclerView.Adapte
             }
 
             isCompletedCheckBox.isChecked = task.isCompleted
+
             if (listener !is SubtaskItemListener) {
                 isFavoriteImageButton.visibility = View.VISIBLE
                 val imageRes = if (task.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border
                 isFavoriteImageButton.setImageResource(imageRes)
+
+                deleteImageButton.visibility = View.GONE
             } else {
                 isFavoriteImageButton.visibility = View.GONE
+
+                deleteImageButton.visibility = View.VISIBLE
+                deleteImageButton.setOnClickListener { listener.deleteSubtask(task) }
             }
 
             root.setOnClickListener {
