@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -15,6 +17,7 @@ import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.BottomSheetFragmentCreateTaskBinding
 import ru.zavgorodnev.googletasks.databinding.FragmentMainBinding
+import ru.zavgorodnev.googletasks.databinding.PageSelectorDialogBinding
 
 class MainFragment : Fragment() {
 
@@ -22,6 +25,7 @@ class MainFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var taskCreationDialog: BottomSheetDialog
+    private lateinit var pageSelectorDialog: BottomSheetDialog
     private val tabTitles = listOf<String>("Избранные", "Все задачи", "Выполненные")
 
     override fun onCreateView(
@@ -35,8 +39,15 @@ class MainFragment : Fragment() {
         taskCreationDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         makeTaskCreationDialog()
 
+        pageSelectorDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+        pageSelectorDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
         binding.createItemFab.setOnClickListener{
             taskCreationDialog.show()
+        }
+
+        binding.bottomAppBar.setNavigationOnClickListener {
+            makePageSelectorDialog()
         }
 
         return binding.root
@@ -53,7 +64,7 @@ class MainFragment : Fragment() {
         }.attach()
     }
 
-    fun makeTaskCreationDialog() {
+    private fun makeTaskCreationDialog() {
         val dialogBinding = BottomSheetFragmentCreateTaskBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
         dialogBinding.saveTaskButton.isEnabled = false
@@ -99,6 +110,43 @@ class MainFragment : Fragment() {
         }
 
         taskCreationDialog.setContentView(dialogBinding.root)
+    }
+
+    private fun makePageSelectorDialog() {
+        val dialogBinding = PageSelectorDialogBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+        pageSelectorDialog.setContentView(dialogBinding.root)
+
+        val buttons = listOf(
+            dialogBinding.favoriteButton,
+            dialogBinding.allTasksButton,
+            dialogBinding.completedButton
+        )
+
+        buttons.forEachIndexed { index, button ->
+            if (index == binding.categoryTabLayout.selectedTabPosition)
+                button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue))
+            else
+                button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
+        }
+
+        dialogBinding.favoriteButton.setOnClickListener {
+            val tab = binding.categoryTabLayout.getTabAt(0)
+            tab?.select()
+            pageSelectorDialog.dismiss()
+        }
+        dialogBinding.allTasksButton.setOnClickListener {
+            val tab = binding.categoryTabLayout.getTabAt(1)
+            tab?.select()
+            pageSelectorDialog.dismiss()
+
+        }
+        dialogBinding.completedButton.setOnClickListener {
+            val tab = binding.categoryTabLayout.getTabAt(2)
+            tab?.select()
+            pageSelectorDialog.dismiss()
+        }
+
+        pageSelectorDialog.show()
     }
 
 }
