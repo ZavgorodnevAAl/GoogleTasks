@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -19,17 +18,18 @@ import ru.zavgorodnev.googletasks.R
 import ru.zavgorodnev.googletasks.data.task.Task
 import ru.zavgorodnev.googletasks.databinding.BottomSheetFragmentCreateTaskBinding
 import ru.zavgorodnev.googletasks.databinding.FragmentDetailBinding
+import ru.zavgorodnev.googletasks.ui.list.TaskItemListener
 import ru.zavgorodnev.googletasks.ui.list.TasksAdapter
 import ru.zavgorodnev.googletasks.utils.Navigator
 import java.util.UUID
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(), SubtaskItemListener {
 
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by activityViewModels()
     private lateinit var task: Task
     private var navigator: Navigator? = null
-    private val subtaskAdapter = TasksAdapter(null)
+    private val subtaskAdapter = TasksAdapter(this)
     private lateinit var taskCreationDialog: BottomSheetDialog
 
     override fun onAttach(context: Context) {
@@ -203,5 +203,15 @@ class DetailFragment : Fragment() {
 
             return fragment
         }
+    }
+
+    override fun onClickTask(taskId: UUID) {}
+
+    override fun onFavoriteButtonPressed(task: Task) {
+        viewModel.save(task)
+    }
+
+    override fun onCompletedButtonPressed(task: Task) {
+        viewModel.save(task)
     }
 }
