@@ -17,13 +17,20 @@ class DetailViewModel : ViewModel() {
     val task: LiveData<Task?> = Transformations.switchMap(taskId) { taskId ->
         taskRepository.getTask(taskId)
     }
+    val subtasks: LiveData<List<Task>> = Transformations.switchMap(taskId) {taskId ->
+        taskRepository.getSubtasks(taskId)
+    }
 
     fun load(_taskId: UUID) {
         taskId.value = _taskId
     }
 
+    fun addSubtask(subtask: Task) = viewModelScope.launch(Dispatchers.IO) {
+        taskRepository.add(subtask)
+    }
+
     fun save(task: Task) = viewModelScope.launch(Dispatchers.IO) {
-            taskRepository.updateTask(task)
+        taskRepository.updateTask(task)
     }
 
     fun delete(task: Task) = viewModelScope.launch(Dispatchers.IO) {
