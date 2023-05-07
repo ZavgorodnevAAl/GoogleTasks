@@ -37,6 +37,7 @@ class InDatabaseTaskRepository private constructor(context: Context) {
     suspend fun removeTask(task: Task) {
 
         tasksDao.deleteTask(task)
+        tasksDao.deleteSubtasks(task.id)
     }
 
     suspend fun add(task: Task) {

@@ -30,6 +30,9 @@ interface TaskDao {
     @Query("UPDATE task SET isCompleted = 1 WHERE parent=(:parentId)")
     fun markSubtasksAsCompleted(parentId: UUID)
 
+    @Query("DELETE FROM task WHERE parent=(:parentId)")
+    fun deleteSubtasks(parentId: UUID)
+
     @Insert
     suspend fun addTask(task: Task)
 
