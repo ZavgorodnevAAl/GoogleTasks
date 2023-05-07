@@ -3,4 +3,7 @@
     <string name="save">Сохранить</string>
     <string name="create_task_hint">Новая задача</string>
     <string name="description_hint">Добавьте дополнительную информацию</string>
+    <string name="enter_title_hint">Введите задачу</string>
+    <string name="mark_completed">Задача выполненна</string>
+    <string name="mark_uncompleted">Задача не выполненна</string>
 </resources>
