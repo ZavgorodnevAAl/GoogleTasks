@@ -12,13 +12,13 @@ import java.util.UUID
 @Dao
 interface TaskDao {
 
-    @Query("SELECT * FROM task WHERE isCompleted = 0")
+    @Query("SELECT * FROM task WHERE isCompleted = 0 AND parent IS NULL")
     fun getTasks(): LiveData<List<Task>>
 
-    @Query("SELECT * FROM task WHERE isFavorite = 1 AND isCompleted = 0")
+    @Query("SELECT * FROM task WHERE isFavorite = 1 AND isCompleted = 0 AND parent IS NULL")
     fun getFavoriteTasks(): LiveData<List<Task>>
 
-    @Query("SELECT * FROM task WHERE isCompleted = 1")
+    @Query("SELECT * FROM task WHERE isCompleted = 1 AND parent IS NULL")
     fun getCompletedTasks(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task WHERE parent=(:parentId)")
