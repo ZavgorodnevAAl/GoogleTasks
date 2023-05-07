@@ -106,7 +106,7 @@ class DetailFragment : Fragment() {
             isChecked = task.isFavorite
             setButtonDrawable(if (isChecked) R.drawable.ic_star else R.drawable.ic_star_border)
         }
-        descriptionText.setText(if (task.isCompleted) R.string.mark_uncompleted else R.string.mark_completed)
+        addToCompletedButton.setText(if (task.isCompleted) R.string.mark_uncompleted else R.string.mark_completed)
     }
 
     private val titleTextWatcher = object : TextWatcher {
